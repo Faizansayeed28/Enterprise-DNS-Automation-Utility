@@ -49,7 +49,7 @@ Edit the `$script:Config` block at the top of the script before running:
 $script:Config = @{
     DnsServer    = $env:COMPUTERNAME   # Your DC hostname — COMPUTERNAME works when run on the DC itself
     Zones        = @(
-        "kpmg.local"                   # Add your DNS zones here
+        "dummy.local"                   # Add your DNS zones here
     )
     LogDirectory = "C:\Logs\DNS"       # Log file output path
     DefaultTTL   = [System.TimeSpan]::FromHours(1)
@@ -60,7 +60,7 @@ $script:Config = @{
 
 > **Running remotely?** Replace `$env:COMPUTERNAME` with the FQDN of your DC:
 > ```powershell
-> DnsServer = "dc01.kpmg.local"
+> DnsServer = "dc01.dummy.local"
 > ```
 
 ---
@@ -106,9 +106,9 @@ Every operation validates inputs before touching DNS:
 Every operation writes a timestamped entry to `C:\Logs\DNS\DNS_YYYY-MM-DD.log`:
 
 ```
-2025-10-14T09:22:11 [AUDIT] User=jsmith Zone=kpmg.local Record=FS01 :: CREATED A record FS01.kpmg.local -> 10.10.1.100 TTL=60m
-2025-10-14T11:05:44 [AUDIT] User=jsmith Zone=kpmg.local Record=FS01 :: UPDATED A record FS01.kpmg.local 10.10.1.100 -> 10.10.1.200 TTL=60m
-2025-10-14T11:32:01 [AUDIT] User=jsmith Zone=kpmg.local Record=TESTVM01 :: DELETED A record TESTVM01.kpmg.local
+2025-10-14T09:22:11 [AUDIT] User=jsmith Zone=dummy.local Record=FS01 :: CREATED A record FS01.dummy.local -> 10.10.1.100 TTL=60m
+2025-10-14T11:05:44 [AUDIT] User=jsmith Zone=dummy.local Record=FS01 :: UPDATED A record FS01.dummy.local 10.10.1.100 -> 10.10.1.200 TTL=60m
+2025-10-14T11:32:01 [AUDIT] User=jsmith Zone=dummy.local Record=TESTVM01 :: DELETED A record TESTVM01.dummy.local
 ```
 
 Log levels: `INFO` · `WARN` · `AUDIT` · `ERROR`
@@ -136,10 +136,10 @@ After any operation, confirm the change took effect:
 
 ```powershell
 # Using PowerShell
-Resolve-DnsName FS01.kpmg.local -Server EC2AMAZ-ESKNMNI
+Resolve-DnsName FS01.dummy.local -Server EC2AMAZ-ESKNMNI
 
 # Using nslookup
-nslookup FS01.kpmg.local EC2AMAZ-ESKNMNI
+nslookup FS01.dummy.local EC2AMAZ-ESKNMNI
 ```
 
 ---
